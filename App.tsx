@@ -1,12 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import AppChecker from './src/components/AppChecker';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Hello, I can communicate with Native.</Text>
-      <StatusBar style="auto" />
+      <AppChecker/>
     </View>
   );
 }
