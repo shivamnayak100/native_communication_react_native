@@ -13,16 +13,18 @@ class CheckAppInstalledModule(reactContext: ReactApplicationContext) :
         return "CheckAppInstalled"
     }
 
-    @ReactMethod
+   @ReactMethod
     fun isAppInstalled(packageName: String, promise: Promise) {
         try {
             val packageManager = reactApplicationContext.packageManager
-            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            promise.resolve(true)
+            packageManager.getPackageInfo(packageName, 0) // No need for GET_ACTIVITIES
+            promise.resolve(true) // App is installed
         } catch (e: PackageManager.NameNotFoundException) {
-            promise.resolve(false)
-        } catch (e: Exception) {  
-            promise.reject("ERROR", "Something went wrong: ${e.message}")
+            promise.resolve(false) // App is not installed
+        } catch (e: SecurityException) {
+            promise.reject("SECURITY_ERROR", "Permission issue: ${e.message}") // Handle restricted access
+        } catch (e: Exception) {
+            promise.reject("ERROR", "Something went wrong: ${e.message}") // Generic error handling
         }
     }
 }
